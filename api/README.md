@@ -65,7 +65,7 @@ when integrations become scheduled.
 To manually build the backend container, run
 
 ```bash
-docker buildx build -t atlas-2-backend --platform linux/amd64 .
+docker buildx build -t atlas-2-backend --platform linux/amd64,linux/arm64 .
 
 docker tag atlas-2-backend jnathan02222/atlas-2-backend
 
