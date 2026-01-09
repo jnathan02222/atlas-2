@@ -1,6 +1,6 @@
 services:
   backend:
-    image: atlas-2-backend
+    image: jnathan02222/atlas-2-backend
     environment:
       NEO4J_HOST: neo4j
       NEO4J_USER: "neo4j"
@@ -15,7 +15,7 @@ services:
     restart: unless-stopped
 
   nginx:
-    image: atlas-2-nginx
+    image: jnathan02222/atlas-2-nginx
     ports:
       - 0.0.0.0:80:80
     environment:
