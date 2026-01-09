@@ -1,12 +1,17 @@
 from neo4j import GraphDatabase
 import logging
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 logger = logging.getLogger(__name__)
 
 
 class DB:
-    URI = "neo4j://localhost:7687"
-    AUTH = ("neo4j", "password")
+    URI = f"neo4j://{os.environ['NEO4J_HOST']}:7687"
+    AUTH = (os.environ["NEO4J_USER"], os.environ["NEO4J_PASSWORD"])
+    DB = os.environ["NEO4J_DB"]
 
     @staticmethod
     def reset():
@@ -23,7 +28,7 @@ class DB:
                 SET n = artist
                 """,
                 artists=artists,
-                database_="neo4j",
+                database_=DB.DB,
             ).summary
             logger.info(
                 "Created {nodes_created} nodes in {time} ms.".format(
@@ -44,7 +49,7 @@ class DB:
                 CREATE (s)-[:RELATED]->(t)
                 """,
                 edges=edges,
-                database_="neo4j",
+                database_=DB.DB,
             ).summary
             logger.info(f"Query counters: {summary.counters}.")
 
@@ -56,7 +61,7 @@ class DB:
                 MATCH (a:Artist {title: $title})-[r:RELATED]->(b:Artist) RETURN b.title AS title, (startNode(r) = a) as outward
                 """,
                 title=title,
-                database_="neo4j",
+                database_=DB.DB,
             ).records
             return records
 
@@ -68,7 +73,7 @@ class DB:
                 MATCH (a:Artist) WHERE toLower(a.title) CONTAINS toLower($name) RETURN a.title AS title LIMIT 10
                 """,
                 name=name,
-                database_="neo4j",
+                database_=DB.DB,
             ).records
             return records
 
@@ -82,6 +87,6 @@ class DB:
                 """,
                 start_title=start_title,
                 end_title=end_title,
-                database_="neo4j",
+                database_=DB.DB,
             ).records
             return records

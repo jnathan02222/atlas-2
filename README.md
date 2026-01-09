@@ -1,35 +1,47 @@
-# atlas-2
+# Atlas
 
-Interactive Graph of Musical Artists
+Atlas is an interactive graph of musicians. Artists that are related
+are linked together, whether they inspired one another,
+played at the same concert or made a song together. You can look
+up a musician to see correlated artists, then click on those
+nodes to find more artists and explore the space!
+
+The idea is that the data that determines these connections will
+be aggregated from various sources or "integrations" (inspired by my
+work at [Secoda](https://www.secoda.co/)), though currently the primary
+integration is Wikipedia (I've been reading a lot on Wikipedia).
 
 ## Backend
 
-Runs sync tasks with Celery and serves via Django.
+A [Django Ninja](https://django-ninja.dev/) API that let's you search
+musicians and their relationships.
+
+Also contains scraping scripts, with plans to use Celery in the future to make
+this a recurring job.
+
+See the `README.md` in `/api` for more details.
 
 ## Frontend
 
-Have a design system
+A [Next](https://nextjs.org/) (hey it's easy to deploy) app that provides
+the interactive UI for searching.
 
-# Stack
-
-Django, Django Ninja, neo4j
-Next, React, react-force-graph
+See the `README.md` in `/frontend` for more details.
 
 ## Testing
 
-pytests
-playwright
+Since this is a personal project tests are currently a low priority, but I will look
+into adding tests with [Pytest](https://docs.pytest.org/en/stable/) and
+[Playwright](https://playwright.dev/) in the future.
 
-## Development tools
+## Deployment
 
-`uv`
-`ruff`
-`ty`
+Frontend deployment is automatically managed by Vercel (again, it's easy).
 
-`pnpm`
-`prettier`
+The backend is organized into various Docker containers. See more in the `README.md`
+for `/deploy`.
 
-OpenAPI codegen
-Django Ninja
+## Contributing
 
-The two main ways to contribute: add an integration + graph algo
+The main ways to contribute to this project are to add integrations, or, if you're feeling
+ambitious, implementing a cool graph algorithm to use (for instance shortest path).

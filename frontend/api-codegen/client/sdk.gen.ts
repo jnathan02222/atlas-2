@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { GraphUrlsNeighboursData, GraphUrlsNeighboursResponses, GraphUrlsSearchData, GraphUrlsSearchResponses } from './types.gen';
+import type { GraphUrlsNeighboursData, GraphUrlsNeighboursResponses, GraphUrlsSearchData, GraphUrlsSearchResponses, GraphUrlsShortestPathData, GraphUrlsShortestPathResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -27,3 +27,8 @@ export const graphUrlsNeighbours = <ThrowOnError extends boolean = false>(option
  * Search
  */
 export const graphUrlsSearch = <ThrowOnError extends boolean = false>(options: Options<GraphUrlsSearchData, ThrowOnError>) => (options.client ?? client).get<GraphUrlsSearchResponses, unknown, ThrowOnError>({ url: '/api/search', ...options });
+
+/**
+ * Shortest Path
+ */
+export const graphUrlsShortestPath = <ThrowOnError extends boolean = false>(options: Options<GraphUrlsShortestPathData, ThrowOnError>) => (options.client ?? client).get<GraphUrlsShortestPathResponses, unknown, ThrowOnError>({ url: '/api/shortest-path', ...options });

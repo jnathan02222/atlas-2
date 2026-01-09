@@ -1,0 +1,24 @@
+services:
+  backend:
+    image: atlas-2-backend
+    environment:
+      NEO4J_HOST: neo4j
+      NEO4J_USER: "neo4j"
+      NEO4J_PASSWORD: "password"
+      NEO4J_DB: "neo4j"
+  neo4j:
+    image: neo4j
+    volumes:
+      - neo4j-data:/data
+      - neo4j-logs:/logs
+
+  nginx:
+    image: atlas-2-nginx
+    ports:
+      - 0.0.0.0:80:80
+    environment:
+      BACKEND_HOST: backend
+
+volumes:
+  neo4j-data:
+  neo4j-logs: 

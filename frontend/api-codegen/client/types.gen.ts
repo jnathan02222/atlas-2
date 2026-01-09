@@ -28,6 +28,16 @@ export type Artist = {
     title: string;
 };
 
+/**
+ * Path
+ */
+export type Path = {
+    /**
+     * Stops
+     */
+    stops: Array<string>;
+};
+
 export type GraphUrlsNeighboursData = {
     body?: never;
     path?: never;
@@ -73,3 +83,30 @@ export type GraphUrlsSearchResponses = {
 };
 
 export type GraphUrlsSearchResponse = GraphUrlsSearchResponses[keyof GraphUrlsSearchResponses];
+
+export type GraphUrlsShortestPathData = {
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * Start Title
+         */
+        start_title: string;
+        /**
+         * End Title
+         */
+        end_title: string;
+    };
+    url: '/api/shortest-path';
+};
+
+export type GraphUrlsShortestPathResponses = {
+    /**
+     * Response
+     *
+     * OK
+     */
+    200: Array<Path>;
+};
+
+export type GraphUrlsShortestPathResponse = GraphUrlsShortestPathResponses[keyof GraphUrlsShortestPathResponses];
