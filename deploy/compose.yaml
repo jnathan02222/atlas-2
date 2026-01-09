@@ -18,6 +18,7 @@ services:
     image: jnathan02222/atlas-2-nginx
     ports:
       - 0.0.0.0:80:80
+      - 0.0.0.0:443:443
     environment:
       BACKEND_HOST: backend
     restart: unless-stopped
