@@ -22,7 +22,17 @@ Then, there are typically various annoying networking things to do:
 1. Open up port 80 and 443 to allow access through the open internet.
 2. Obtain a permanent IP for the VM.
 3. Point your domain to this IP.
-4. Cry after doing so much manual labour in an industry built on automation.
+4. Run [Certbot](https://certbot.eff.org/) (bundled) with the Nginx container
+
+```bash
+docker exec -t -i deploy-nginx-1 /bin/bash
+
+# Inside the container bash:
+certbot --nginx
+
+```
+
+5. Cry after doing so much manual labour in an industry built on automation.
 
 ### Nginx
 

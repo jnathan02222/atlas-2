@@ -9,4 +9,3 @@ RUN /opt/certbot/bin/pip install certbot certbot-nginx
 RUN ln -s /opt/certbot/bin/certbot /usr/bin/certbot
 # renewal cron job
 RUN echo "0 0,12 * * * root /opt/certbot/bin/python -c 'import random; import time; time.sleep(random.random() * 3600)' && sudo certbot renew -q" | tee -a /etc/crontab > /dev/null
-CMD nginx && certbot --nginx --non-interactive --agree-tos -d api.spotifyatlas.com && nginx -g daemon off;

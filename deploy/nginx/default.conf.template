@@ -1,5 +1,5 @@
 server {
-    server_name api.spotifyatlas.com;
+    server_name backend.spotifyatlas.com;
     location /api/ {
         proxy_pass http://${BACKEND_HOST}:8000/api/;
     }
