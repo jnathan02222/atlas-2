@@ -6,12 +6,15 @@ services:
       NEO4J_USER: "neo4j"
       NEO4J_PASSWORD: "password"
       NEO4J_DB: "neo4j"
+
     restart: unless-stopped
   neo4j:
     image: neo4j
     volumes:
       - neo4j-data:/data
       - neo4j-logs:/logs
+    environment:
+      NEO4J_AUTH: none
     restart: unless-stopped
 
   nginx:
