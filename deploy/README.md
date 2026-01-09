@@ -46,7 +46,7 @@ sits in front of the backend server.
 To build the container that has it, run the following in `/nginx`.
 
 ```bash
-docker build -t atlas-2-nginx .
+docker buildx build -t atlas-2-nginx --platform linux/amd64 .
 
 docker tag atlas-2-nginx jnathan02222/atlas-2-nginx
 
