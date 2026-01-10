@@ -32,10 +32,6 @@ certbot --nginx
 
 ```
 
-When restarting the Nginx container (which may be required after a
-change to the backend container), this will have to be run again (though
-the same certificate may be used).
-
 5. Cry after doing so much manual labour in an industry built on automation.
 
 ### Nginx
@@ -65,5 +61,5 @@ In the future all builds will probably be automated through CI.
 mkdir data
 tar -xvzf deploy_neo4j-data.tar.gz -C ./data
 
-docker compose up
+# Will probably have to restart for this to work.
 ```
