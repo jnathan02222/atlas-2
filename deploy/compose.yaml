@@ -11,7 +11,9 @@ services:
   neo4j:
     image: neo4j
     volumes:
-      - neo4j-data:/data
+      - type: bind
+        source: ./data
+        target: /data
       - neo4j-logs:/logs
     environment:
       NEO4J_AUTH: none
@@ -27,5 +29,4 @@ services:
     restart: unless-stopped
 
 volumes:
-  neo4j-data:
   neo4j-logs: 

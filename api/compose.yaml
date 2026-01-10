@@ -3,9 +3,7 @@ services:
   neo4j:
     image: neo4j
     volumes:
-      - type: bind
-        source: ./data
-        target: /data
+      - neo4j-data:/data
       - neo4j-logs:/logs
       
     ports:
@@ -13,4 +11,5 @@ services:
       - 127.0.0.1:7687:7687
 
 volumes:
+  neo4j-data:
   neo4j-logs: 
