@@ -32,6 +32,15 @@ certbot --nginx
 
 ```
 
+You may wonder why `/conf.d/default.conf` is being mounted to the Nginx container.
+`default.conf` contains some configurations that allows Certbot to work. We could
+add it as a file in the build step, but for some reason this means that on
+restart any changes (including changes made by Certbot) are reset, regardless
+of whether it's contained in a volume. By instead mounting the file, we can
+provide the necessary initial state while allowing persistent changes. Since
+this file is managed by git this is a bit of an anti-pattern (when you pull
+you'll have to avoid changing it), but oh well :/
+
 5. Cry after doing so much manual labour in an industry built on automation.
 
 ### Nginx
