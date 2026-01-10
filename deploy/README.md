@@ -42,7 +42,7 @@ sits in front of the backend server.
 To build the container that has it, run the following in `/nginx`.
 
 ```bash
-docker buildx build -t atlas-2-nginx --platform linux/amd64,linux/arm64 .
+docker buildx build -t atlas-2-nginx --platform linux/amd64,linux/arm64 . # or whatever architecture the VM uses
 
 docker tag atlas-2-nginx jnathan02222/atlas-2-nginx
 
@@ -61,5 +61,4 @@ In the future all builds will probably be automated through CI.
 mkdir data
 tar -xvzf deploy_neo4j-data.tar.gz -C ./data
 
-# Will probably have to restart for this to work.
 ```

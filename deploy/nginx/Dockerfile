@@ -1,5 +1,5 @@
 FROM nginx:trixie-perl
-COPY default.conf.template /etc/nginx/templates/default.conf.template
+COPY default.conf /etc/nginx/conf.d/default.conf
 RUN apt-get update
 RUN apt-get install -y python3 python3-dev python3-venv libaugeas-dev gcc
 RUN apt-get remove certbot
