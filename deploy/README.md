@@ -22,7 +22,7 @@ Then, there are typically various annoying networking things to do:
 1. Open up port 80 and 443 to allow access through the open internet.
 2. Obtain a permanent IP for the VM.
 3. Point your domain to this IP.
-4. Run [Certbot](https://certbot.eff.org/) (bundled) with the Nginx container
+4. Run [Certbot](https://certbot.eff.org/) (bundled with the Nginx container)
 
 ```bash
 docker exec -t -i deploy-nginx-1 /bin/bash
@@ -31,6 +31,10 @@ docker exec -t -i deploy-nginx-1 /bin/bash
 certbot --nginx
 
 ```
+
+When restarting the Nginx container (which may be required after a
+change to the backend container), this will have to be run again (though
+the same certificate may be used).
 
 5. Cry after doing so much manual labour in an industry built on automation.
 
@@ -51,3 +55,15 @@ docker push jnathan02222/atlas-2-nginx
 ```
 
 In the future all builds will probably be automated through CI.
+
+### Transferring the database
+
+```bash
+# Zip with Docker Desktop and transfer the file
+
+# Then on VM
+mkdir data
+tar -xvzf deploy_neo4j-data.tar.gz -C ./data
+
+docker compose up
+```
