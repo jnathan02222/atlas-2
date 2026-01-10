@@ -26,7 +26,9 @@ services:
       - 0.0.0.0:443:443
     volumes:
       - nginx-certbot:/etc/letsencrypt/
-      - nginx-nginx:/etc/nginx/
+      - type: bind
+        source: ./conf.d
+        target: /etc/nginx/conf.d
     environment:
       BACKEND_HOST: backend
     restart: unless-stopped
@@ -34,4 +36,3 @@ services:
 volumes:
   neo4j-logs: 
   nginx-certbot:
-  nginx-nginx:
