@@ -15,29 +15,35 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from typing import Optional
+import pandoc
+from pandoc.types import *
 from django.contrib import admin
 from django.urls import path
 from ninja import NinjaAPI
-from ninja import Schema
 from db import DB
-from wikipedia_api.client import Client as WikipediaClient
+from ninja import Schema
+
+api = NinjaAPI()
 
 
 class Neighbour(Schema):
     title: str
     outward: bool
+    description: Optional[str]
 
 
 class Artist(Schema):
     title: str
+    description: Optional[str] = None
+
+
+class Edge(Schema):
+    description: list[str]
 
 
 class Path(Schema):
     stops: list[str]
-
-
-wikipedia_client = WikipediaClient()
-api = NinjaAPI()
 
 
 @api.get("/neighbours", response=list[Neighbour])
@@ -47,7 +53,36 @@ def neighbours(request, title: str):
 
 @api.get("/search", response=list[Artist])
 def search(request, name: str):
-    return [record.data() for record in DB.search_for_artist(name)]
+    return [record.data()["a"] for record in DB.search_for_artist(name)]
+
+
+@api.get("/edge-description", response=list[Edge])
+def edge_description(request, source: str, target: str):
+    response = []
+    for record in DB.get_edge_description(source, target):
+        data = record.data()
+        description = []
+        for paragraph in data["description"]:
+            try:
+                doc = pandoc.read(paragraph, format="mediawiki")
+
+                matches = [
+                    (elt, path)
+                    for (elt, path) in pandoc.iter(doc, path=True)
+                    if "Note" in str(elt.__class__)
+                    or "Image" in str(elt.__class__)
+                    or "Header" in str(elt.__class__)
+                ]
+                for elt, path in reversed(matches):
+                    holder, index = path[-1]
+                    del holder[index]
+                doc = pandoc.write(doc, format="plain")
+                description.append(doc)
+            except Exception:
+                pass
+        data["description"] = description
+        response.append(data)
+    return response
 
 
 @api.get("/shortest-path", response=list[Path])

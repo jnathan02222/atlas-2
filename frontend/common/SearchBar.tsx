@@ -5,7 +5,7 @@ type SearchBarProps = {
   placeholder: string;
   onSelect: (value: Artist) => void;
   searchValue: string;
-  setSearchValue: Dispatch<SetStateAction<string>>;
+  setSearchValue: (value: string) => void;
 };
 export default function SearchBar({
   placeholder,
@@ -54,7 +54,7 @@ export default function SearchBar({
           type="text"
           id="name"
           placeholder={placeholder}
-          className="text-5xl outline-none font-medium field-sizing-content max-w-full"
+          className="text-5xl outline-none font-medium field-sizing-content pr-12"
           autoComplete="off"
           value={searchValue}
           onChange={(e) => {
@@ -62,7 +62,7 @@ export default function SearchBar({
           }}
         />
       </form>
-      <div className="absolute">
+      <div className="absolute w-128">
         {results.map((value) => {
           return (
             <div

@@ -16,6 +16,10 @@ export type Neighbour = {
      * Outward
      */
     outward: boolean;
+    /**
+     * Description
+     */
+    description: string | null;
 };
 
 /**
@@ -26,6 +30,20 @@ export type Artist = {
      * Title
      */
     title: string;
+    /**
+     * Description
+     */
+    description: string | null;
+};
+
+/**
+ * Edge
+ */
+export type Edge = {
+    /**
+     * Description
+     */
+    description: Array<string>;
 };
 
 /**
@@ -83,6 +101,33 @@ export type GraphUrlsSearchResponses = {
 };
 
 export type GraphUrlsSearchResponse = GraphUrlsSearchResponses[keyof GraphUrlsSearchResponses];
+
+export type GraphUrlsEdgeDescriptionData = {
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * Source
+         */
+        source: string;
+        /**
+         * Target
+         */
+        target: string;
+    };
+    url: '/api/edge-description';
+};
+
+export type GraphUrlsEdgeDescriptionResponses = {
+    /**
+     * Response
+     *
+     * OK
+     */
+    200: Array<Edge>;
+};
+
+export type GraphUrlsEdgeDescriptionResponse = GraphUrlsEdgeDescriptionResponses[keyof GraphUrlsEdgeDescriptionResponses];
 
 export type GraphUrlsShortestPathData = {
     body?: never;

@@ -16,7 +16,7 @@ class DB:
     @staticmethod
     def reset():
         with GraphDatabase.driver(DB.URI, auth=DB.AUTH) as driver:
-            driver.execute_query("MATCH (a:Artist) DETACH DELETE a", database_="neo4j")
+            driver.execute_query("MATCH (a:Artist) DETACH DELETE a", database_=DB.DB)
 
     @staticmethod
     def add_artists(artists):
@@ -24,7 +24,7 @@ class DB:
             summary = driver.execute_query(
                 """
                 UNWIND $artists AS artist
-                CREATE (n:Artist)
+                MERGE (n:Artist {title: artist.title})
                 SET n = artist
                 """,
                 artists=artists,
@@ -38,17 +38,18 @@ class DB:
             )
 
     @staticmethod
-    def add_edges(edges):
+    def add_edges(nodes):
         with GraphDatabase.driver(DB.URI, auth=DB.AUTH) as driver:
             summary = driver.execute_query(
                 """
-                UNWIND $edges AS edge
-                MATCH (s:Artist { pageid: edge.source })
-                UNWIND edge.targets AS target
-                MATCH (t:Artist { pageid: target }) 
-                CREATE (s)-[:RELATED]->(t)
+                UNWIND $nodes AS node
+                MATCH (s:Artist { pageid: node.id })
+                UNWIND node.edges AS edge
+                MATCH (t:Artist { pageid: edge.target }) 
+                MERGE (s)-[r:RELATED]->(t)
+                SET r.description = edge.description
                 """,
-                edges=edges,
+                nodes=nodes,
                 database_=DB.DB,
             ).summary
             logger.info(f"Query counters: {summary.counters}.")
@@ -56,11 +57,26 @@ class DB:
     @staticmethod
     def get_neighbours(title):
         with GraphDatabase.driver(DB.URI, auth=DB.AUTH) as driver:
+            # Currently just outward links
             records = driver.execute_query(
                 """
-                MATCH (a:Artist {title: $title})-[r:RELATED]->(b:Artist) RETURN b.title AS title, (startNode(r) = a) as outward
+                MATCH (a:Artist {title: $title})-[r:RELATED]->(b:Artist) RETURN b.title AS title, b.description as description,(startNode(r) = a) as outward
                 """,
                 title=title,
+                database_=DB.DB,
+            ).records
+            return records
+
+    @staticmethod
+    def get_edge_description(source, target):
+        with GraphDatabase.driver(DB.URI, auth=DB.AUTH) as driver:
+            # Currently just outward links
+            records = driver.execute_query(
+                """
+                MATCH (a:Artist {title: $source})-[r:RELATED]->(b:Artist {title: $target}) RETURN r.description as description
+                """,
+                source=source,
+                target=target,
                 database_=DB.DB,
             ).records
             return records
@@ -70,7 +86,7 @@ class DB:
         with GraphDatabase.driver(DB.URI, auth=DB.AUTH) as driver:
             records = driver.execute_query(
                 """
-                MATCH (a:Artist) WHERE toLower(a.title) CONTAINS toLower($name) RETURN a.title AS title LIMIT 10
+                MATCH (a:Artist) WHERE toLower(a.title) CONTAINS toLower($name) RETURN a LIMIT 10
                 """,
                 name=name,
                 database_=DB.DB,

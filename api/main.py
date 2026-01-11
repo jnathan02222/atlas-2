@@ -17,7 +17,9 @@ async def test():
     # start = wikitext[:index][::-1].find(".")
     # end = wikitext[index:].find(". ")
     # print(wikitext[index - start : index + end + 1])
-    print(DB().shortest_path("The Strokes", "Radiohead"))
+    # print(DB().shortest_path("The Strokes", "Radiohead"))
+
+    await Wikipedia().sync()
 
 
 def main():

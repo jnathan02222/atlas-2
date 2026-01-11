@@ -10,10 +10,12 @@
     "openapi-ts": "openapi-ts"
   },
   "dependencies": {
+    "@tanstack/react-pacer": "^0.19.1",
     "next": "16.1.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "react-force-graph-2d": "^1.29.0"
+    "react-force-graph-2d": "^1.29.0",
+    "react-loading-skeleton": "^3.5.0"
   },
   "devDependencies": {
     "@hey-api/openapi-ts": "0.89.2",

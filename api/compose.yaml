@@ -9,6 +9,7 @@ services:
     ports:
       - 127.0.0.1:7474:7474
       - 127.0.0.1:7687:7687
+    
 
 volumes:
   neo4j-data:

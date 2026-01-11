@@ -2,6 +2,8 @@ FROM ghcr.io/astral-sh/uv:debian
 # Copy the project into the image
 COPY . .
 
+RUN apt-get pandoc -y
+
 # Disable development dependencies
 ENV UV_NO_DEV=1
 

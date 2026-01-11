@@ -1,3 +1,4 @@
+import itertools
 import httpx
 from httpx import Response
 import asyncio
@@ -33,10 +34,15 @@ class Client:
             yield data
 
     async def transcludedin(self, title):
-        def process_data(data):
+        async def process_data(data):
             page = next(iter(data["query"]["pages"].values()))
-            for artist in page["transcludedin"]:
-                yield artist
+
+            batches = list(itertools.batched(page["transcludedin"], 50))
+            for batch in batches:
+                async for page in self.description(
+                    [str(page["pageid"]) for page in batch]
+                ):
+                    yield page
 
         params = {
             "action": "query",
@@ -48,8 +54,19 @@ class Client:
         }
 
         async for data in self.paginated_api_request(params, "ticontinue"):
-            for item in process_data(data):
+            async for item in process_data(data):
                 yield item
+
+    async def description(self, pageids):
+        params = {
+            "action": "query",
+            "pageids": "|".join(pageids),
+            "prop": "description",
+            "format": "json",
+        }
+        data = (await self.api_request(params=params)).json()
+        for page in iter(data["query"]["pages"].values()):
+            yield page
 
     async def wikitext(self, title) -> str:
         params = {
