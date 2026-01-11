@@ -17,7 +17,6 @@ Including another URLconf
 
 from typing import Optional
 import pandoc
-from pandoc.types import *
 from django.contrib import admin
 from django.urls import path
 from ninja import NinjaAPI
@@ -77,6 +76,7 @@ def edge_description(request, source: str, target: str):
                     holder, index = path[-1]
                     del holder[index]
                 doc = pandoc.write(doc, format="plain")
+                doc
                 description.append(doc)
             except Exception:
                 pass
