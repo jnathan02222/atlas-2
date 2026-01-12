@@ -12,7 +12,7 @@ be aggregated from various sources or "integrations" (inspired by my
 work at [Secoda](https://www.secoda.co/)), though currently the primary
 integration is Wikipedia (I've been reading a lot on Wikipedia).
 
-Why [spotifyatlas.com](spotifyatlas.com)? It's a bit of a misnomer, I'm reusing a domain
+Why [spotifyatlas.com](https://www.spotifyatlas.com/)? It's a bit of a misnomer, I'm reusing a domain
 from a previous project.
 
 ## Backend
