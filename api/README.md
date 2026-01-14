@@ -52,8 +52,8 @@ frontend/
 [ruff](https://docs.astral.sh/ruff/) is a Python formatter + linter.
 Will probably be added as a CI check, but for now run it yourself.
 
-[ty](https://docs.astral.sh/ty/) is a Python type checker. This will
-be more useful when I make everything type-safe.
+[ty](https://docs.astral.sh/ty/) is a Python type checker. Types
+should be used as often as possible.
 
 Relevant backend technologies: [Django](https://www.djangoproject.com/),
 [Django Ninja](https://django-ninja.dev/), [Neo4j](https://neo4j.com/)

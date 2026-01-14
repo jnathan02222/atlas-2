@@ -23,7 +23,7 @@ export default function SearchBar({
     }
   }
   function handleSelect(artist: Artist) {
-    setSearchValue(artist.title);
+    setSearchValue(artist.name);
     setResultsLatest([], Date.now());
     onSelect(artist);
   }
@@ -67,12 +67,12 @@ export default function SearchBar({
           return (
             <div
               className="cursor-pointer"
-              key={value.title}
+              key={value.name}
               onClick={() => {
                 handleSelect(value);
               }}
             >
-              {value.title}
+              {value.name}
             </div>
           );
         })}

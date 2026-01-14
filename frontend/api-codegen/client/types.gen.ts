@@ -4,80 +4,62 @@ export type ClientOptions = {
     baseUrl: string;
 };
 
-/**
- * Neighbour
- */
-export type Neighbour = {
-    /**
-     * Title
-     */
-    title: string;
-    /**
-     * Outward
-     */
-    outward: boolean;
-    /**
-     * Description
-     */
-    description: string | null;
-};
+export type ArtistId = number;
 
 /**
  * Artist
  */
 export type Artist = {
+    id: ArtistId;
     /**
-     * Title
+     * Name
      */
-    title: string;
+    name: string;
     /**
-     * Description
+     * Wikipedia Title
      */
-    description: string | null;
+    wikipedia_title?: string | null;
+    /**
+     * Wikipedia Description
+     */
+    wikipedia_description?: string | null;
+    /**
+     * Wikipedia Summary
+     */
+    wikipedia_summary?: string | null;
 };
 
 /**
  * Edge
  */
 export type Edge = {
+    source: Artist;
+    target: Artist;
     /**
-     * Description
+     * Wikipedia Description
      */
-    description: Array<string>;
+    wikipedia_description?: string | null;
 };
 
-/**
- * Path
- */
-export type Path = {
-    /**
-     * Stops
-     */
-    stops: Array<string>;
-};
-
-export type GraphUrlsNeighboursData = {
+export type GraphUrlsEdgesData = {
     body?: never;
     path?: never;
     query: {
-        /**
-         * Title
-         */
-        title: string;
+        artist: number;
     };
-    url: '/api/neighbours';
+    url: '/api/edges';
 };
 
-export type GraphUrlsNeighboursResponses = {
+export type GraphUrlsEdgesResponses = {
     /**
      * Response
      *
      * OK
      */
-    200: Array<Neighbour>;
+    200: Array<Edge>;
 };
 
-export type GraphUrlsNeighboursResponse = GraphUrlsNeighboursResponses[keyof GraphUrlsNeighboursResponses];
+export type GraphUrlsEdgesResponse = GraphUrlsEdgesResponses[keyof GraphUrlsEdgesResponses];
 
 export type GraphUrlsSearchData = {
     body?: never;
@@ -106,14 +88,8 @@ export type GraphUrlsEdgeDescriptionData = {
     body?: never;
     path?: never;
     query: {
-        /**
-         * Source
-         */
-        source: string;
-        /**
-         * Target
-         */
-        target: string;
+        source: number;
+        target: number;
     };
     url: '/api/edge-description';
 };
@@ -128,30 +104,3 @@ export type GraphUrlsEdgeDescriptionResponses = {
 };
 
 export type GraphUrlsEdgeDescriptionResponse = GraphUrlsEdgeDescriptionResponses[keyof GraphUrlsEdgeDescriptionResponses];
-
-export type GraphUrlsShortestPathData = {
-    body?: never;
-    path?: never;
-    query: {
-        /**
-         * Start Title
-         */
-        start_title: string;
-        /**
-         * End Title
-         */
-        end_title: string;
-    };
-    url: '/api/shortest-path';
-};
-
-export type GraphUrlsShortestPathResponses = {
-    /**
-     * Response
-     *
-     * OK
-     */
-    200: Array<Path>;
-};
-
-export type GraphUrlsShortestPathResponse = GraphUrlsShortestPathResponses[keyof GraphUrlsShortestPathResponses];

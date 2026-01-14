@@ -3,7 +3,6 @@ FROM ghcr.io/astral-sh/uv:debian
 COPY . .
 
 RUN apt-get update
-RUN apt-get install pandoc -y
 
 # Disable development dependencies
 ENV UV_NO_DEV=1

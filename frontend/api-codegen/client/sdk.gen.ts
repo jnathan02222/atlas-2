@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { GraphUrlsEdgeDescriptionData, GraphUrlsEdgeDescriptionResponses, GraphUrlsNeighboursData, GraphUrlsNeighboursResponses, GraphUrlsSearchData, GraphUrlsSearchResponses, GraphUrlsShortestPathData, GraphUrlsShortestPathResponses } from './types.gen';
+import type { GraphUrlsEdgeDescriptionData, GraphUrlsEdgeDescriptionResponses, GraphUrlsEdgesData, GraphUrlsEdgesResponses, GraphUrlsSearchData, GraphUrlsSearchResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -19,9 +19,9 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
 };
 
 /**
- * Neighbours
+ * Edges
  */
-export const graphUrlsNeighbours = <ThrowOnError extends boolean = false>(options: Options<GraphUrlsNeighboursData, ThrowOnError>) => (options.client ?? client).get<GraphUrlsNeighboursResponses, unknown, ThrowOnError>({ url: '/api/neighbours', ...options });
+export const graphUrlsEdges = <ThrowOnError extends boolean = false>(options: Options<GraphUrlsEdgesData, ThrowOnError>) => (options.client ?? client).get<GraphUrlsEdgesResponses, unknown, ThrowOnError>({ url: '/api/edges', ...options });
 
 /**
  * Search
@@ -32,8 +32,3 @@ export const graphUrlsSearch = <ThrowOnError extends boolean = false>(options: O
  * Edge Description
  */
 export const graphUrlsEdgeDescription = <ThrowOnError extends boolean = false>(options: Options<GraphUrlsEdgeDescriptionData, ThrowOnError>) => (options.client ?? client).get<GraphUrlsEdgeDescriptionResponses, unknown, ThrowOnError>({ url: '/api/edge-description', ...options });
-
-/**
- * Shortest Path
- */
-export const graphUrlsShortestPath = <ThrowOnError extends boolean = false>(options: Options<GraphUrlsShortestPathData, ThrowOnError>) => (options.client ?? client).get<GraphUrlsShortestPathResponses, unknown, ThrowOnError>({ url: '/api/shortest-path', ...options });

@@ -15,79 +15,59 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from typing import Optional
-import pandoc
 from django.contrib import admin
 from django.urls import path
 from ninja import NinjaAPI
 from db import DB
-from ninja import Schema
+from wikipedia_api.client import title_to_url
+from bs4 import BeautifulSoup
+from integrations.types import Artist, Edge, ArtistId, Relation
 
 api = NinjaAPI()
 
-
-class Neighbour(Schema):
-    title: str
-    outward: bool
-    description: Optional[str]
+db = DB()
 
 
-class Artist(Schema):
-    title: str
-    description: Optional[str] = None
-
-
-class Edge(Schema):
-    description: list[str]
-
-
-class Path(Schema):
-    stops: list[str]
-
-
-@api.get("/neighbours", response=list[Neighbour])
-def neighbours(request, title: str):
-    return [record.data() for record in DB.get_neighbours(title)]
-
-
-@api.get("/search", response=list[Artist])
-def search(request, name: str):
-    return [record.data()["a"] for record in DB.search_for_artist(name)]
-
-
-@api.get("/edge-description", response=list[Edge])
-def edge_description(request, source: str, target: str):
-    response = []
-    for record in DB.get_edge_description(source, target):
-        data = record.data()
-        description = []
-        for paragraph in data["description"]:
-            try:
-                doc = pandoc.read(paragraph, format="mediawiki")
-
-                matches = [
-                    (elt, path)
-                    for (elt, path) in pandoc.iter(doc, path=True)
-                    if "Note" in str(elt.__class__)
-                    or "Image" in str(elt.__class__)
-                    or "Header" in str(elt.__class__)
-                ]
-                for elt, path in reversed(matches):
-                    holder, index = path[-1]
-                    del holder[index]
-                doc = pandoc.write(doc, format="plain")
-                doc
-                description.append(doc)
-            except Exception:
-                pass
-        data["description"] = description
-        response.append(data)
+@api.get("/edges", response=list[Edge])
+async def edges(
+    request, artist: ArtistId, relations: list[Relation] = [Relation.WIKIPEDIA]
+):
+    response = await db.get_edges(artist, relations)
     return response
 
 
-@api.get("/shortest-path", response=list[Path])
-def shortest_path(request, start_title: str, end_title: str):
-    return [record.data() for record in DB.shortest_path(start_title, end_title)]
+@api.get("/search", response=list[Artist])
+async def search(request, name: str):
+    response = await db.get_artists(name)
+    return response
+
+
+@api.get("/edge-description", response=list[Edge])
+async def edge_description(request, source: ArtistId, target: ArtistId):
+    response = []
+    for edge in await db.get_edge_data(source, target):
+        if edge.wikipedia_description and edge.target.wikipedia_title:
+            # Remove all references, links and highlight the target
+            soup = BeautifulSoup(edge.wikipedia_description, "html.parser")
+            for sup in soup.find_all("sup"):
+                sup.decompose()
+            for a in soup.find_all("a"):
+                if (
+                    a.get("href")
+                    == f"/wiki/{title_to_url(edge.target.wikipedia_title)}"
+                ):
+                    a.name = "mark"
+                else:
+                    a.unwrap()
+
+            edge.wikipedia_description = str(soup)
+        response.append(edge)
+    return response
+
+
+# @api.get("/shortest-path", response=list[Path])
+# def shortest_path(request, start_title: str, end_title: str):
+#     return [record.data() for record in DB.shortest_path(start_title, end_title)]
 
 
 urlpatterns = [
