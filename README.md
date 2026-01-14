@@ -5,7 +5,14 @@
 > Music connects worlds that should not be linked
 =======
 
+<<<<<<< HEAD
 >>>>>>> 32eb726 (change domain)
+=======
+> I can't get that melody out of my head
+>
+> Music connects worlds that should not be linked
+
+>>>>>>> 02ee099 (domain change)
 <img width="3024" height="1712" alt="image" src="https://github.com/user-attachments/assets/7359c8ee-bbe8-48ff-8561-c71472a2dd86" />
 
 Atlas is an interactive graph of musicians. Artists that are related
