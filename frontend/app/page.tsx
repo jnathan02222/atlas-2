@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import SearchBar from "@/common/SearchBar";
 import Map from "@/common/Map";
 import EdgeSidebar from "@/common/EdgeSidebar";
@@ -11,19 +11,36 @@ export default function Home() {
   const [showDescription, setShowDescription] = useState(false);
 
   const [selectedEdge, setSelectedEdge] = useState<Edge | undefined>();
+  const [results, setResults] = useState<Artist[]>([]);
+  const latestTimestamp = useRef(0);
+
+  function setResultsLatest(results: Artist[], timestamp: number) {
+    if (timestamp > latestTimestamp.current) {
+      latestTimestamp.current = timestamp;
+      setResults(results);
+    }
+  }
+  function onSelect(artist: Artist) {
+    setSearchValue(artist.name);
+    setResultsLatest([], Date.now());
+    setSelectedArtist(artist);
+    setShowDescription(true);
+  }
+
   return (
     <div>
       <div className="p-12 absolute z-10">
         <SearchBar
           placeholder="Enter a musician"
-          onSelect={(value) => {
-            setSelectedArtist(value);
-            setShowDescription(true);
-          }}
+          onSelect={onSelect}
           searchValue={searchValue}
           setSearchValue={(value) => {
             setSearchValue(value);
             setShowDescription(false);
+          }}
+          results={results}
+          setResults={(value) => {
+            setResults(value);
           }}
         />
         {showDescription && (
@@ -35,10 +52,7 @@ export default function Home() {
       <EdgeSidebar edge={selectedEdge}></EdgeSidebar>
       <Map
         artist={selectedArtist}
-        onSelect={(artist: Artist) => {
-          setSearchValue(artist.name);
-          setSelectedArtist(artist);
-        }}
+        onSelect={onSelect}
         onEdgeClick={(edge: Edge | undefined) => {
           setSelectedEdge(edge);
         }}

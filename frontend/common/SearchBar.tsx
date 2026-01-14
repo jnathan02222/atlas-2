@@ -6,38 +6,27 @@ type SearchBarProps = {
   onSelect: (value: Artist) => void;
   searchValue: string;
   setSearchValue: (value: string) => void;
+  results: Artist[];
+  setResults: (value: Artist[], timestamp: number) => void;
 };
 export default function SearchBar({
   placeholder,
   onSelect,
   searchValue,
   setSearchValue,
+  results,
+  setResults,
 }: SearchBarProps) {
-  const [results, setResults] = useState<Artist[]>([]);
-  const latestTimestamp = useRef(0);
-
-  function setResultsLatest(results: Artist[], timestamp: number) {
-    if (timestamp > latestTimestamp.current) {
-      latestTimestamp.current = timestamp;
-      setResults(results);
-    }
-  }
-  function handleSelect(artist: Artist) {
-    setSearchValue(artist.name);
-    setResultsLatest([], Date.now());
-    onSelect(artist);
-  }
-
   async function handleSearch(value: string) {
     const timestamp = Date.now();
     setSearchValue(value);
     if (value == "") {
-      setResultsLatest([], timestamp);
+      setResults([], timestamp);
       return;
     }
     // TODO: debounce?
     const response = await graphUrlsSearch({ query: { name: value } });
-    setResultsLatest(response.data ?? [], timestamp);
+    setResults(response.data ?? [], timestamp);
   }
 
   return (
@@ -46,7 +35,7 @@ export default function SearchBar({
         onSubmit={(e) => {
           e.preventDefault();
           if (results.length > 0) {
-            handleSelect(results[0]);
+            onSelect(results[0]);
           }
         }}
       >
@@ -69,7 +58,7 @@ export default function SearchBar({
               className="cursor-pointer"
               key={value.name}
               onClick={() => {
-                handleSelect(value);
+                onSelect(value);
               }}
             >
               {value.name}
