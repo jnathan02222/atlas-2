@@ -1,7 +1,11 @@
 # Atlas
+<<<<<<< HEAD
 > I can't get that melody out of my head
 > 
 > Music connects worlds that should not be linked
+=======
+
+>>>>>>> 32eb726 (change domain)
 <img width="3024" height="1712" alt="image" src="https://github.com/user-attachments/assets/7359c8ee-bbe8-48ff-8561-c71472a2dd86" />
 
 Atlas is an interactive graph of musicians. Artists that are related
@@ -15,8 +19,8 @@ be aggregated from various sources or "integrations" (inspired by my
 work at [Secoda](https://www.secoda.co/)), though currently the primary
 integration is Wikipedia (I've been reading a lot on Wikipedia).
 
-Why [spotifyatlas.com](https://www.spotifyatlas.com/)? It's a bit of a misnomer, I'm reusing a domain
-from a previous project.
+Why [your-song-connects-worlds.com](https://your-song-connects-worlds.com/)?
+It's a reference to something that inspired this project :)
 
 ## Backend
 
