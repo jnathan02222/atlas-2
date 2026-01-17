@@ -17,6 +17,10 @@ a VM, pull this repo and run (in this directory):
 docker compose up
 ```
 
+Note: there may be problems with containers starting in the wrong order.
+Ideally the Neo4j container should start first, then the backend container,
+which creates the indexes, and finally the Nginx container.
+
 Then, there are typically various annoying networking things to do:
 
 1. Open up port 80 and 443 to allow access through the open internet.
