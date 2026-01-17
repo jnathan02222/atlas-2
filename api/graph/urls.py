@@ -26,6 +26,7 @@ from integrations.types import Artist, Edge, ArtistId, Relation
 api = NinjaAPI()
 
 db = DB()
+db.init_index()
 
 
 @api.get("/edges", response=list[Edge])
