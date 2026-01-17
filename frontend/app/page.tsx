@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import SearchBar from "@/common/SearchBar";
 import Map from "@/common/Map";
 import EdgeSidebar from "@/common/EdgeSidebar";
-import { Artist, Edge } from "@/api-codegen/client";
+import { Artist, Edge, graphUrlsSearch } from "@/api-codegen/client";
 
 export default function Home() {
   const [selectedArtist, setSelectedArtist] = useState<Artist | undefined>();
@@ -27,21 +27,27 @@ export default function Home() {
     setShowDescription(true);
   }
 
+  async function handleSearch(value: string) {
+    const timestamp = Date.now();
+    setSearchValue(value);
+    if (value == "") {
+      setResultsLatest([], timestamp);
+      return;
+    }
+    // TODO: debounce?
+    const response = await graphUrlsSearch({ query: { name: value } });
+    setResultsLatest(response.data ?? [], timestamp);
+  }
+
   return (
     <div>
       <div className="p-12 absolute z-10">
         <SearchBar
           placeholder="Enter a musician"
           onSelect={onSelect}
+          handleSearch={handleSearch}
           searchValue={searchValue}
-          setSearchValue={(value) => {
-            setSearchValue(value);
-            setShowDescription(false);
-          }}
           results={results}
-          setResults={(value) => {
-            setResults(value);
-          }}
         />
         {showDescription && (
           <div className="text-gray-500">

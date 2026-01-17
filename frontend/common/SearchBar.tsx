@@ -1,34 +1,18 @@
-import { useState, useRef, Dispatch, SetStateAction } from "react";
 import { Artist } from "@/api-codegen/client";
-import { graphUrlsSearch } from "@/api-codegen/client";
 type SearchBarProps = {
   placeholder: string;
   onSelect: (value: Artist) => void;
   searchValue: string;
-  setSearchValue: (value: string) => void;
   results: Artist[];
-  setResults: (value: Artist[], timestamp: number) => void;
+  handleSearch: (value: string) => void;
 };
 export default function SearchBar({
   placeholder,
   onSelect,
   searchValue,
-  setSearchValue,
   results,
-  setResults,
+  handleSearch,
 }: SearchBarProps) {
-  async function handleSearch(value: string) {
-    const timestamp = Date.now();
-    setSearchValue(value);
-    if (value == "") {
-      setResults([], timestamp);
-      return;
-    }
-    // TODO: debounce?
-    const response = await graphUrlsSearch({ query: { name: value } });
-    setResults(response.data ?? [], timestamp);
-  }
-
   return (
     <div>
       <form
