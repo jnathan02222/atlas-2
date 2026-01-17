@@ -29,6 +29,8 @@ export default function Home() {
 
   async function handleSearch(value: string) {
     const timestamp = Date.now();
+    setShowDescription(false);
+
     setSearchValue(value);
     if (value == "") {
       setResultsLatest([], timestamp);
