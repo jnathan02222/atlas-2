@@ -40,7 +40,7 @@ export default function SearchBar({
           return (
             <div
               className="cursor-pointer"
-              key={value.name}
+              key={value.id}
               onClick={() => {
                 onSelect(value);
               }}
