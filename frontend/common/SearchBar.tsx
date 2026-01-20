@@ -25,6 +25,7 @@ export default function SearchBar({
       >
         <input
           type="text"
+          autoFocus
           id="name"
           placeholder={placeholder}
           className="text-5xl outline-none font-medium field-sizing-content pr-12"
